@@ -1,0 +1,26 @@
+name: Deploy to Sakura Server via FTP
+
+on:
+  push:
+    branches:
+      - dev  # 'dev' ブランチに push された際に実行される
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # このjobをどこで実行するか→ubuntuの最新で実行する
+                            # 複数のジョブを設定することも可能(今回は1つ)
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. FTP サーバーにデプロイ
+      - name: Deploy to Sakura Server via FTP
+        uses: samkirkland/ftp-deploy-action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}         # FTPサーバー名（GitHub Secretsから取得）
+          username: ${{ secrets.FTP_USERNAME }}     # FTPユーザー名（GitHub Secretsから取得）
+          password: ${{ secrets.FTP_PASSWORD }}     # FTPパスワード（GitHub Secretsから取得）
+          local-dir: ./                             # ローカルディレクトリ（GitHub Actions内のコード）
+          server-dir: /home/einekleine/laratter/    # さくらサーバー上のデプロイ先ディレクトリ

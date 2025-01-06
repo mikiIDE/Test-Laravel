@@ -19,8 +19,14 @@
 		}
 	},
 	"remoteUser": "sail",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true"
+	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
 	// "forwardPorts": [],
 	// "runServices": [],
 	// "shutdownAction": "none",
+
+	// SSHキー永続化のため追加
+	"mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+]
+
 }
